@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>ISC</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+
+
+</head>
+<body>
+
+	<div th:insert="fragments/navbar :: navbar"></div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h3 class="ml-5">
+		Liste des utilisateurs
+		</h1>
+		<br>
+		<table class="table table-striped table-bordered w-75 p-3 ml-5">
+			<thead>
+				<tr>
+					<th scope="col">Id</th>
+					<th scope="col">Nom</th>
+					<th scope="col" colspan="2">Mot de passe</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user:${users}">
+					<th th:text="${user.idUser}"></th>
+					<td th:text="${user.nameUser}"></td>
+					<td th:text="${user.passwordUser}"></td>
+					<td><a th:href="@{/user/{id}(id=${user.idUser})}"><button type="button"
+			class="btn btn-outline-danger ml-5">Supprimer</button></a></td>
+				</tr>
+			</tbody>
+		</table>
+</body>
+</html>

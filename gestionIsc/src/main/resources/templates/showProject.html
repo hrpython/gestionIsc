@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta charset="utf-8">
+
+<title>ISC</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+
+
+</head>
+<body>
+
+	<div th:insert="fragments/navbar :: navbar"></div>
+
+	<br>
+	<br>
+	<br>
+
+	<br>
+	<h3 class="ml-5">Liste des projets</h3>
+	<br>
+	<table class="table table-striped table-bordered ml-5 w-75 p-3">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th class="col-6">Nom projet</th>
+				<!-- <th>Bon commande</th>
+				<th>Lots</th>
+				<th>Num&eacute;ro Op&eacute;ration Prot&eacute;g&eacute;e</th>
+				<th>Num&eacute;ro PCS</th>
+				<th>Indice PCS</th>
+				<th>Auteur</th> -->
+				<th colspan="3"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="project:${projects}">
+				<td th:text="${project.idProject}"></td>
+				<td th:text="${project.nameProject}"></td>
+				<!-- <td th:text="${project.bonCommande}"></td>
+				<td th:text="${project.lots}"></td>
+				<td th:text="${project.numAppelationProtegee}"></td>
+				<td th:text="${project.numPcs}"></td>
+				<td th:text="${project.indicePcs}"></td>
+				<td th:text="${project.idUser}"></td> -->
+
+				<!-- <td><a
+					th:href="@{/updateProject/{id}(id=${project.idProject})}"><button
+							type="button" class="btn btn-outline-info ml-5">Modifier</button></a></td> -->
+				<td><a
+					th:href="@{/completeProject/{id}(id=${project.idProject})}"><button
+							type="button" class="btn btn-outline-secondary ml-5">Afficher</button></a></td>
+				<td><a th:href="@{/showProject/{id}(id=${project.idProject})}"><button
+							type="button" class="btn btn-outline-danger ml-5">Supprimer</button></a></td>
+				<td><a
+					th:href="@{/updateProject/{id}(id=${project.idProject})}"><button
+							type="button" class="btn btn-outline-info ml-5">Modifier</button></a></td>
+
+
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<a href="/registrationProject/"><button type="button"
+			class="btn btn-outline-success ml-5">Nouveau projet</button></a>
+</body>
+</html>

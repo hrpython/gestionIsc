@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta charset="utf-8">
+<title>ISC</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+
+</head>
+<body>
+	<div th:insert="fragments/navbar :: navbar"></div>
+
+
+
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<h3 class="ml-5">Liste des adresses</h3>
+	<br>
+	<table class="table table-striped table-bordered ml-5 w-75 p-3">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Civilit&eacute;</th>
+				<th>Nom</th>
+				<th>Pr&eacute;nom</th>
+				<th>Num&eacute;ro et nom de rue</th>
+				<th>Ville</th>
+				<th>Code postal</th>
+				<th>Organisme</th>
+				<th colspan="2"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="address:${addresses}">
+				<td th:text="${address.idAdresse}"></td>
+				<td th:text="${address.genre}"></td>
+				<td th:text="${address.nom}"></td>
+				<td th:text="${address.prenom}"></td>
+				<td th:text="${address.numNomRue}"></td>
+				<td th:text="${address.ville}"></td>
+				<td th:text="${address.codePostal}"></td>
+				<td th:text="${address.organisme}"></td>
+				<td><a
+					th:href="@{/updateAddress/{id}(id=${address.idAdresse})}"><button type="button"
+			class="btn btn-outline-info ml-5">Modifier</button></a></td>
+				<td><a th:href="@{/showAddress/{id}(id=${address.idAdresse})}"><button type="button"
+			class="btn btn-outline-danger ml-5">Supprimer</button></a></td>
+
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<a href="/registrationAddress/"><button type="button"
+			class="btn btn-outline-success ml-5">Nouvelle addresse</button></a>
+</body>
+</html>

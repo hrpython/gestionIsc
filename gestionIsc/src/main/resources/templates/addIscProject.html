@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta charset="utf-8">
+
+<title>ISC</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+
+</head>
+<body th:with="project=${projects}">
+		<div th:insert="fragments/navbar :: navbar"></div>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<h3 class="ml-5">Ajouter des adresses &agrave; un projet</h3>
+
+	<br>
+
+	<table class="table table-striped table-bordered ml-5 w-75 p-3">
+		<thead>
+		<thead>
+			<tr>
+				<th>IdIsc</th>
+				<th>DateIsc</th>
+				<th>typeSupport</th>
+				<th>classification</th>
+				<th>numExemplaire</th>
+				<th>numCopie</th>
+				<th>reference</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="isc:${iscs}">
+				<td th:text="${isc.idIsc}"></td>
+				<td th:text="${isc.DateIsc}"></td>
+				<td th:text="${isc.typeSupport}"></td>
+				<td th:text="${isc.classification}"></td>
+				<td th:text="${isc.numExemplaire}"></td>
+				<td th:text="${isc.numCopie}"></td>
+				<td
+					th:text="|${isc.typeSupport}/${isc.dateIsc}/${isc.numExemplaire}/${isc.numCopie}|"></td>
+				<!-- 	<td><a th:href="@{/showAddress/{id}(id=${address.idAdresse})}"><button
+							type="button" class="btn btn-outline-danger ml-5">Supprimer</button></a></td> -->
+				<td><a
+					th:href="@{/addTempIscProject/{id}/{idProject}(idProject=${project.idProject},id=${isc.idIsc})}"><button
+							type="button" class="btn btn-outline-success ml-5">Ajouter
+							l'ISC</button></a></td>
+
+			</tr>
+	</table>
+	<a th:href="@{/RegistrationIsc/{idProject}(idProject=${project.idProject})}"><button
+			type="button" class="btn btn-outline-success ml-5">Ajouter
+			l'ISC</button></a>
+
+</body>
+</html>
