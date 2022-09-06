@@ -25,7 +25,7 @@
 <input type="text" th:name="idPro" th:value="${idProject}"  />
 </td>
 </tr>
-		<tr th:each="isc:${iscs}" th:name="${iscs_}">
+		<tr th:each="isc:${iscs}" th:name="iscs">
 			<td><input name="iscs" type="checkbox" th:value="${isc.idIsc}"
 				th:text="|${isc.typeSupport}/${isc.dateIsc}/${isc.numExemplaire}/${isc.numCopie}|"></td>
 		</tr>
