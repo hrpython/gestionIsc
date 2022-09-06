@@ -14,12 +14,18 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Be {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,13 +34,13 @@ public class Be {
 	private Long idIscs;
 
 	@OneToMany
-	private List<Isc> iscs = new ArrayList<>();
+	public List<Isc> iscs = new ArrayList<>();
 
-	public Be(Long idBordereau, LocalDate DateCreationBe, Long idIscs) {
-		this.idBordereau = idBordereau;
-		this.DateCreationBe = DateCreationBe;
-		this.idIscs = idIscs;
-
-	}
+//	public Be(Long idBordereau, LocalDate DateCreationBe, Long idIscs) {
+//		this.idBordereau = idBordereau;
+//		this.DateCreationBe = DateCreationBe;
+//		this.idIscs = idIscs;
+//
+//	}
 
 }

@@ -62,25 +62,42 @@ public class AddressServiceImpl implements AddressService {
 	public Optional<Address> findById(Long id) {
 		return addressRepository.findById(id);
 	}
-
+	
 	@Override
-	public void genererMonBordereau(Long idProject, Long idDestinataire, Long[] idIscs) {
+	public void genererMonBordereau(Long idProject, Long idDestinataire, List<Long> idIscs) {
 		List<Ref_be> ref_bes = new ArrayList<Ref_be>();
-		Address address = addressRepository.findById(idDestinataire).get();
-		Project project = projectRepository.findById(idProject).get();
+		Address address = addressRepository.findById(idDestinataire).get(); 
+		Project project = projectRepository.findById(idProject).get(); 
 		List<Isc> iscs = new ArrayList<>();
 		for (Long indice : idIscs) {
 			iscs.add(iscRepository.findById(indice).get());
-		}
+			}
 		for (Isc isc : iscs) {
-			ref_bes.add(new Ref_be(project.getNumAppelationProtegee(), project.getNumPcs(), project.getBonCommande(),
-					isc.getClassification(), isc.getNumExemplaire(),
-					isc.getNumCopie(), isc.getDateIsc(), address.getNom(), isc.getTypeSupport(), null,
-					null, project.getNameProject(), address.getOrganisme()));
-		}
+			ref_bes
+			.add(new Ref_be(project.getNumAppelationProtegee(),project.getNumPcs(),
+					project.getBonCommande(), isc.getClassification(),
+					isc.getNumExemplaire(), isc.getNumCopie(), isc.getDateIsc(),
+					address.getNom(), isc.getTypeSupport(), null, null, project.getNameProject(),
+					address.getOrganisme())); }
 		createWordDocument(ref_bes);
+		}
 
-	}
+	/*
+	 * @Override public void genererMonBordereau(Long idProject, Long
+	 * idDestinataire, List<Long>idIscs) { List<Ref_be> ref_bes = new
+	 * ArrayList<Ref_be>(); Address address =
+	 * addressRepository.findById(idDestinataire).get(); Project project =
+	 * projectRepository.findById(idProject).get(); List<Isc> iscs = new
+	 * ArrayList<>(); for (Long indice : idIscs) {
+	 * iscs.add(iscRepository.findById(indice).get()); } for (Isc isc : iscs) {
+	 * ref_bes.add(new Ref_be(project.getNumAppelationProtegee(),
+	 * project.getNumPcs(), project.getBonCommande(), isc.getClassification(),
+	 * isc.getNumExemplaire(), isc.getNumCopie(), isc.getDateIsc(),
+	 * address.getNom(), isc.getTypeSupport(), null, null, project.getNameProject(),
+	 * address.getOrganisme())); } createWordDocument(ref_bes);
+	 * 
+	 * }
+	 */
 
 	public void createWordDocument(List<Ref_be> ref_bes) {
 		// create a document
@@ -227,4 +244,6 @@ public class AddressServiceImpl implements AddressService {
 			}
 		}
 	}
+
+	
 }

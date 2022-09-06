@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gestionIsc.model.Address;
 import com.gestionIsc.model.Be;
@@ -34,9 +37,11 @@ import com.gestionIsc.service.IscService;
 import com.gestionIsc.service.ProjectService;
 import com.gestionIsc.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 //import lombok.extern.slf4j.Slf4j;
 
-//@Slf4j
+@Slf4j
 @Controller
 public class ProjectController {
 	private static Logger logger = LoggerFactory.getLogger(ProjectController.class);
@@ -61,16 +66,19 @@ public class ProjectController {
 	}
 
 	@PostMapping("/registrationProject")
-	public String registerproject(@ModelAttribute("sentproject") Project project, @ModelAttribute("history") History history) {
+	public String registerproject(@ModelAttribute("sentproject") Project project,
+			@ModelAttribute("history") History history) {
 		org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Long idUser = userRepository.findByNameUser(auth.getName()).getIdUser();//////////////////////// ********************************************************************************
 		String nameUser = userRepository.findByNameUser(auth.getName()).getNameUser();
 		// logger.info("idUser" + idUser);
 		LocalDate dateProjet = LocalDate.now();
 		projectService.saveProject(new Project(project.getNameProject(), project.getBonCommande(), project.getLots(),
-				idUser, project.getNumAppelationProtegee(), project.getNumPcs(), project.getIndicePcs(), dateProjet, null, null));
+				idUser, project.getNumAppelationProtegee(), project.getNumPcs(), project.getIndicePcs(), dateProjet,
+				null, null));
 		String message = "Création du projet";
-		historyService.saveHistory(new History(history.getIdHistory(), project.getNameProject(), dateProjet, idUser, nameUser, message));
+		historyService.saveHistory(
+				new History(history.getIdHistory(), project.getNameProject(), dateProjet, idUser, nameUser, message));
 		logger.info("idProject" + project.getIdProject());
 		return "redirect:showProject";
 	}
@@ -222,32 +230,48 @@ public class ProjectController {
 	}
 
 	@GetMapping("/genererBordereau/{idProject}")
-	public String addressedubordereau(@PathVariable Long idProject, Model model, Model model1, Model model2,
-			Model model3) {
+	public String addressedubordereau(@PathVariable Long idProject, Model model, Model model1, Model model2
+		, Model model3	) {
 		Project project = null;
 		Optional<Project> optional = projectService.findById(idProject);
 		if (optional.isPresent()) {
 			project = optional.get();
 		} else {
 			throw new RuntimeException("PAS DE PROJET POUR L'ID" + idProject);
-		} 
+		}
 		model.addAttribute("projects", project);
 		List<Address> addresses = new ArrayList<Address>();
 		addresses = projectService.findAddressFromProjectAddress(idProject);
 		model1.addAttribute("addresses", addresses);
 		List<Isc> iscs = new ArrayList<Isc>();
 		iscs = projectService.findIscFromProjectIsc(idProject);
-		model3.addAttribute("iscs", iscs);
-		//logger.info("id de mon projet :  " + idProject);
+		model2.addAttribute("iscs", iscs);
+		model3.addAttribute("idProject", idProject);
+		// logger.info("id de mon projet : " + idProject);
 		return "genererBordereau";
 	}
 
-	@PostMapping("/genererBordereau/{idProject}/{idDestinataire}/{idIscs}")
-	public String genererBordereau(@PathVariable Long idProject, @PathVariable Long idDestinataire,
-			@PathVariable Long[] idIscs, @ModelAttribute("be") Be be) {
-		beService.saveBe(new Be(be.getIdBordereau(), be.getDateCreationBe(), be.getIdIscs()));
-		addressService.genererMonBordereau(idProject, idDestinataire, idIscs);
-		 logger.info("id de mon projet : " + idProject + "id de mon adresse : " + idDestinataire + "id de mes isc : " + idIscs);
+	@PostMapping("/genererBordereau")
+	public String genererBordereau(
+			@RequestParam(value = "project", required = false) Project project,
+	        @RequestParam(value = "address", required = false) Address address,
+	        @RequestParam(value = "iscs", required = false) List<Long> iscsId,
+	        @RequestParam(value = "idPro", required = false)  Long idProject)
+	//		 , @ModelAttribute("be") Be be)
+	{
+		Be be = new Be();
+		be=beService.saveBe(be);
+		be.setDateCreationBe(LocalDate.now());
+		List<Isc> iscs = new ArrayList<Isc>();
+		iscs = iscsId.stream().map(f -> iscService.findById(f).get()).collect(Collectors.toList());
+		be.setIscs(iscs);
+		be.setIdIscs(idProject);
+		log.info(be.toString());
+		beService.saveBe(be);
+		
+		Long idDestinataire = address.getIdAdresse();
+		addressService.genererMonBordereau(idProject, idDestinataire, iscsId);
+		log.info("id de mon projet : " + idProject + "id de mon adresse : " +idDestinataire );
 		return "redirect:/completeProject/{idProject}";
 	}
 

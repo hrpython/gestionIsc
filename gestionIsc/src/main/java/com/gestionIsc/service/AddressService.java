@@ -10,5 +10,5 @@ public interface AddressService {
 	public Address saveAddress(Address address);
 	public void deleteById(Long id);
 	public Optional<Address> findById(Long id);
-	public void genererMonBordereau(Long idProject, Long idDestinataire, Long[] idIscs);
+	public void genererMonBordereau(Long idProject, Long idDestinataire, List<Long> idIscs);
 }

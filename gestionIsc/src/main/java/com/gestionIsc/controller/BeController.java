@@ -1,10 +1,18 @@
 package com.gestionIsc.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import com.gestionIsc.model.Address;
+import com.gestionIsc.model.Project;
 import com.gestionIsc.repository.UserRepository;
 import com.gestionIsc.service.AddressService;
 import com.gestionIsc.service.IscService;
@@ -29,14 +37,16 @@ public class BeController {
 
 	// page affichage adresses et projets
 
+	
 	/*
 	 * @GetMapping("/completeProject/{id}") public String
-	 * completeMyProject(@PathVariable Long id, Model model, Model model1) { //
-	 * Project project = null; model.addAttribute("projects", project);
-	 * List<Address> addresses = new ArrayList<Address>();
+	 * completeMyProject(@PathVariable Long id, Model model, Model model1) { Project
+	 * project = null; model.addAttribute("projects", project); List<Address>
+	 * addresses = new ArrayList<Address>();
 	 * projectService.findAddressFromProjectAddress(id);
 	 * model1.addAttribute("addresses", addresses); return "/completeProject"; }
 	 */
+	 
 
 	/*
 	 * @GetMapping("/Be") public String showAllProjects(Model model) {
